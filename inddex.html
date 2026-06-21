@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>民航安全管理规定 · 管理者法律责任自测</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #f0f4f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 860px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 20, 40, 0.12);
+            padding: 30px 30px 40px;
+            transition: 0.3s;
+        }
+        h1 {
+            font-size: 24px;
+            color: #0a2a44;
+            border-left: 6px solid #1a73e8;
+            padding-left: 16px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .subhead {
+            color: #5f6b7a;
+            font-size: 14px;
+            margin-bottom: 18px;
+            padding-left: 22px;
+            border-bottom: 1px solid #e9edf4;
+            padding-bottom: 12px;
+        }
+        .subhead span {
+            background: #eef3fc;
+            padding: 2px 12px;
+            border-radius: 30px;
+            color: #1a5bbf;
+            font-weight: 500;
+        }
+
+        /* ---- 个人信息栏 ---- */
+        .info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 30px;
+            background: #f6f9fe;
+            padding: 14px 20px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            align-items: center;
+            border: 1px solid #e3ebf6;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+        .info-item label {
+            font-weight: 500;
+            color: #1e3a5f;
+            white-space: nowrap;
+        }
+        .info-item input {
+            border: 1px solid #cbd5e1;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+            width: 160px;
+            background: white;
+        }
+        .info-item input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+        }
+        .info-item input::placeholder {
+            color: #a0b3cc;
+        }
+
+        /* ---- 题目样式 ---- */
+        .question-item {
+            background: #f9fafc;
+            border-radius: 16px;
+            padding: 18px 20px 16px;
+            margin-bottom: 16px;
+            border: 1px solid #eef2f7;
+            transition: 0.2s;
+        }
+        .question-item.correct-highlight {
+            border-left: 6px solid #1e8e3e;
+            background: #f1f9f0;
+        }
+        .question-item.wrong-highlight {
+            border-left: 6px solid #d93025;
+            background: #fef6f5;
+        }
+        .q-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 6px;
+        }
+        .q-title .badge {
+            background: #dce3ed;
+            color: #1e3b5c;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 0 10px;
+            height: 22px;
+            line-height: 22px;
+            flex-shrink: 0;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-left: 4px;
+        }
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: #1e293b;
+            padding: 6px 12px 6px 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+            width: fit-content;
+            min-width: 160px;
+        }
+        .options label:hover {
+            background: #edf2f9;
+        }
+        .options input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #1a73e8;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .options input[type="radio"]:disabled {
+            accent-color: #8a9aa8;
+            cursor: not-allowed;
+        }
+        .options label.disabled-label {
+            cursor: default;
+            opacity: 0.9;
+        }
+        .options label.disabled-label:hover {
+            background: transparent;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 14px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .feedback.show {
+            display: flex;
+        }
+        .feedback.correct {
+            background: #e6f4ea;
+            color: #1e5d34;
+        }
+        .feedback.wrong {
+            background: #fce8e6;
+            color: #a50e0e;
+        }
+        .feedback .ref {
+            background: rgba(0,0,0,0.06);
+            padding: 0 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            color: #3c4b5a;
+            margin-left: auto;
+        }
+
+        /* ---- 底部操作栏 ---- */
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 2px dashed #dde3ec;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .action-left {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .action-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            border: none;
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
+            background: #eef2f7;
+            color: #1e3a5f;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+            box-shadow: 0 4px 8px rgba(26, 115, 232, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1558b0;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(26, 115, 232, 0.3);
+        }
+        .btn-success {
+            background: #1e8e3e;
+            color: white;
+            box-shadow: 0 4px 8px rgba(30, 142, 62, 0.2);
+        }
+        .btn-success:hover {
+            background: #157a33;
+            transform: translateY(-1px);
+        }
+        .btn-warning {
+            background: #f9ab00;
+            color: #1e3a5f;
+            box-shadow: 0 4px 8px rgba(249, 171, 0, 0.25);
+        }
+        .btn-warning:hover {
+            background: #e09e00;
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #bcc9db;
+        }
+        .btn-outline:hover {
+            background: #f0f5ff;
+            border-color: #7a96c0;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.3);
+        }
+        .score-area {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2a44;
+            background: #e9f0fa;
+            padding: 4px 22px;
+            border-radius: 60px;
+            display: inline-block;
+        }
+        .score-area span {
+            color: #1a73e8;
+            font-size: 28px;
+            margin: 0 4px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        #statusHint {
+            font-size: 13px;
+            color: #5f6b7a;
+            text-align: right;
+            margin-top: 6px;
+        }
+        .record-count {
+            font-size: 14px;
+            color: #1e3a5f;
+            background: #eef3fc;
+            padding: 4px 16px;
+            border-radius: 30px;
+            display: inline-block;
+        }
+        @media (max-width: 640px) {
+            .container { padding: 18px; }
+            .info-bar { flex-direction: column; align-items: stretch; }
+            .info-item input { width: 100%; }
+            .action-bar { flex-direction: column; align-items: stretch; }
+            .action-left, .action-right { justify-content: center; }
+            .btn { justify-content: center; }
+            .options label { width: 100%; }
+            .score-area { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✈️ 民航安全管理规定 · 法律责任专测</h1>
+    <div class="subhead">
+        <span>CCAR-398R1 第五章（第36-43条）</span>  &nbsp; 共10题，每题10分
+    </div>
+
+    <!-- 个人信息填写栏 -->
+    <div class="info-bar">
+        <div class="info-item">
+            <label for="userName">👤 姓名</label>
+            <input type="text" id="userName" placeholder="请输入姓名" value="">
+        </div>
+        <div class="info-item">
+            <label for="userEmpId">🆔 员工号</label>
+            <input type="text" id="userEmpId" placeholder="请输入员工号" value="">
+        </div>
+        <div style="font-size:13px; color:#6b7f96; margin-left:auto;">
+            必填，将记录在答题报告中
+        </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <div class="action-bar">
+        <div class="action-left">
+            <button class="btn btn-primary" id="submitBtn">✅ 提交并判卷</button>
+            <button class="btn btn-success" id="downloadBtn" disabled>⬇️ 下载答题详情</button>
+        </div>
+        <div class="action-right">
+            <button class="btn btn-warning" id="statsDownloadBtn" disabled>📊 成绩统计下载</button>
+            <div id="scoreDisplay" class="score-area hidden">得分：<span id="scoreNum">0</span> 分</div>
+        </div>
+    </div>
+    <div id="statusHint">
+        请填写姓名和员工号，完成所有题目后提交
+        <span class="record-count" id="recordCount" style="margin-left:12px;">📁 本地记录：0 条</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ----- 题库（10道管理者法律责任选择题）-----
+        const questions = [
+            {
+                id: 1,
+                text: '主要负责人未建立健全并落实（ ），将依照《安全生产法》第九十四条处理。',
+                options: ['生产经营责任制', '全员安全生产责任制', '质量管理责任制', '绩效考核责任制'],
+                answer: 1,
+                ref: '第38条（一）'
+            },
+            {
+                id: 2,
+                text: '"双重预防工作机制" 是指安全风险分级管控和（ ）。',
+                options: ['安全投入保障', '隐患排查治理', '安全教育培训', '应急预案演练'],
+                answer: 1,
+                ref: '第38条（二）'
+            },
+            {
+                id: 3,
+                text: '主要负责人未保证本单位安全生产（ ）的有效实施，将依法承担相应责任。',
+                options: ['生产计划', '设备更新', '人员编制', '投入'],
+                answer: 3,
+                ref: '第38条（四）'
+            },
+            {
+                id: 4,
+                text: '民航生产经营单位未建立安全风险（ ）管控制度，将依照《安全生产法》第一百零一条处理。',
+                options: ['分级', '分类', '分段', '分时'],
+                answer: 0,
+                ref: '第39条（一）'
+            },
+            {
+                id: 5,
+                text: '特定民航生产经营单位未建立安全管理体系（SMS），责令限期改正逾期未改正的，处（ ）罚款。',
+                options: ['1千元以上5千元以下', '1万元以上5万元以下', '5万元以上10万元以下', '10万元以上20万元以下'],
+                answer: 1,
+                ref: '第42条'
+            },
+            {
+                id: 6,
+                text: '特定民航生产经营单位未制定安全（ ）大纲的，责令限期改正，逾期未改正的处1万元以上3万元以下罚款。',
+                options: ['培训', '检查', '演练', '风险评估'],
+                answer: 0,
+                ref: '第43条（二）'
+            },
+            {
+                id: 7,
+                text: '未建立安全隐患排查治理制度，或者重大安全隐患排查治理情况未按照规定（ ）的，依法处理。',
+                options: ['公示', '报告', '备案', '存档'],
+                answer: 1,
+                ref: '第39条（二）'
+            },
+            {
+                id: 8,
+                text: '民航生产经营单位未采取措施（ ）安全隐患的，由民航地区管理局依照《安全生产法》第一百零二条处理。',
+                options: ['识别', '消除', '登记', '隔离'],
+                answer: 1,
+                ref: '第40条'
+            },
+            {
+                id: 9,
+                text: '主要负责人未组织制定并实施本单位安全生产（ ），将依照《安全生产法》第九十四条处理。',
+                options: ['生产作业计划', '安全生产教育和培训计划', '设备更新计划', '财务预算计划'],
+                answer: 1,
+                ref: '第38条（三）'
+            },
+            {
+                id: 10,
+                text: '特定民航生产经营单位未建立SMS，首先应责令限期改正，并予以（ ）。',
+                options: ['罚款1万元', '暂停运营', '警告或通报批评', '吊销许可'],
+                answer: 2,
+                ref: '第42条'
+            }
+        ];
+
+        // ----- DOM 引用 -----
+        const container = document.getElementById('quizContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const statsDownloadBtn = document.getElementById('statsDownloadBtn');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const scoreNum = document.getElementById('scoreNum');
+        const statusHint = document.getElementById('statusHint');
+        const recordCountSpan = document.getElementById('recordCount');
+        const userNameInput = document.getElementById('userName');
+        const userEmpIdInput = document.getElementById('userEmpId');
+
+        let isSubmitted = false;
+        const STORAGE_KEY = 'examRecords_CCAR398';
+
+        // ----- 本地存储操作 -----
+        function getRecords() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch { return []; }
+        }
+
+        function saveRecord(record) {
+            const records = getRecords();
+            records.push(record);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+            updateRecordCount();
+            // 启用统计下载按钮（只要有记录即可）
+            if (records.length > 0) {
+                statsDownloadBtn.disabled = false;
+            }
+        }
+
+        function updateRecordCount() {
+            const records = getRecords();
+            recordCountSpan.textContent = `📁 本地记录：${records.length} 条`;
+        }
+
+        // 页面加载时更新记录数
+        updateRecordCount();
+        // 如果有记录，启用统计下载
+        if (getRecords().length > 0) {
+            statsDownloadBtn.disabled = false;
+        }
+
+        // ----- 渲染试题 -----
+        function renderQuestions() {
+            let html = '';
+            questions.forEach((q, idx) => {
+                html += `<div class="question-item" id="qItem_${idx}">`;
+                html += `<div class="q-title"><span class="badge">${idx+1}</span> ${q.text}</div>`;
+                html += `<div class="options" id="options_${idx}">`;
+                q.options.forEach((opt, oi) => {
+                    const idVal = `q${idx}_opt${oi}`;
+                    html += `<label for="${idVal}">`;
+                    html += `<input type="radio" name="q${idx}" id="${idVal}" value="${oi}">`;
+                    html += `${String.fromCharCode(65 + oi)}. ${opt}`;
+                    html += `</label>`;
+                });
+                html += `</div>`;
+                html += `<div class="feedback" id="feedback_${idx}">`;
+                html += `<span id="fbText_${idx}"></span>`;
+                html += `<span class="ref" id="fbRef_${idx}"></span>`;
+                html += `</div>`;
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        }
+        renderQuestions();
+
+        // ----- 判卷逻辑 -----
+        function evaluateQuiz() {
+            const userName = userNameInput.value.trim() || '未填写';
+            const userEmpId = userEmpIdInput.value.trim() || '未填写';
+
+            let correctCount = 0;
+            const total = questions.length;
+            const userAnswers = [];
+
+            document.querySelectorAll('.question-item').forEach(el => {
+                el.classList.remove('correct-highlight', 'wrong-highlight');
+            });
+
+            questions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                const feedbackEl = document.getElementById(`feedback_${idx}`);
+                const fbText = document.getElementById(`fbText_${idx}`);
+                const fbRef = document.getElementById(`fbRef_${idx}`);
+                const optionsContainer = document.getElementById(`options_${idx}`);
+                const itemDiv = document.getElementById(`qItem_${idx}`);
+
+                optionsContainer.querySelectorAll('input[type="radio"]').forEach(inp => inp.disabled = true);
+                optionsContainer.querySelectorAll('label').forEach(lbl => lbl.classList.add('disabled-label'));
+
+                let isCorrect = false;
+                let selectedText = '未作答';
+
+                if (selected) {
+                    const val = parseInt(selected.value);
+                    selectedText = q.options[val];
+                    if (val === q.answer) {
+                        isCorrect = true;
+                        correctCount++;
+                    }
+                }
+
+                userAnswers.push({
+                    index: idx,
+                    question: q.text,
+                    selected: selectedText,
+                    correctAnswer: q.options[q.answer],
+                    isCorrect: isCorrect
+                });
+
+                feedbackEl.classList.add('show');
+                if (isCorrect) {
+                    feedbackEl.className = 'feedback show correct';
+                    fbText.textContent = '✅ 回答正确';
+                    itemDiv.classList.add('correct-highlight');
+                } else {
+                    feedbackEl.className = 'feedback show wrong';
+                    fbText.textContent = `❌ 正确答案是：${q.options[q.answer]}`;
+                    itemDiv.classList.add('wrong-highlight');
+                }
+                fbRef.textContent = `依据 ${q.ref}`;
+            });
+
+            const score = correctCount * 10;
+            scoreNum.textContent = score;
+            scoreDisplay.classList.remove('hidden');
+            statusHint.textContent = `已提交 · 正确 ${correctCount}/${total}  ·  姓名：${userName}  工号：${userEmpId}`;
+            downloadBtn.disabled = false;
+
+            // 构建本次结果对象（用于显示和下载详情）
+            const result = {
+                userName: userName,
+                userEmpId: userEmpId,
+                userAnswers: userAnswers,
+                score: score,
+                total: total,
+                timestamp: new Date().toLocaleString('zh-CN', { hour12: false })
+            };
+            window._examResults = result;
+
+            // ---- 保存到本地存储（成绩统计） ----
+            const record = {
+                name: userName,
+                empId: userEmpId,
+                score: score,
+                total: total,
+                timestamp: result.timestamp
+            };
+            saveRecord(record);
+
+            return result;
+        }
+
+        // ----- 提交事件 -----
+        submitBtn.addEventListener('click', function() {
+            const name = userNameInput.value.trim();
+            const empId = userEmpIdInput.value.trim();
+            if (!name || !empId) {
+                if (!confirm('姓名或员工号未填写，答题报告中将会显示"未填写"。确定继续吗？')) {
+                    return;
+                }
+            }
+
+            let allDone = true;
+            questions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (!selected) allDone = false;
+            });
+
+            if (!allDone) {
+                if (!confirm('还有题目未作答，确定要提交吗？（未答视为错误）')) {
+                    return;
+                }
+            }
+
+            if (isSubmitted) {
+                if (!confirm('已经提交过了，确定要重新判卷吗？（会覆盖之前的结果，但成绩记录会新增一条）')) {
+                    return;
+                }
+            }
+
+            evaluateQuiz();
+            isSubmitted = true;
+            submitBtn.textContent = '🔄 重新判卷';
+        });
+
+        // ----- 下载本次答题详情（CSV）-----
+        downloadBtn.addEventListener('click', function() {
+            const results = window._examResults;
+            if (!results) {
+                alert('请先提交试卷再下载。');
+                return;
+            }
+
+            let csvContent = '\uFEFF';
+            csvContent += '考试名称,姓名,员工号,提交时间,总分,满分\r\n';
+            csvContent += `民航安全管理规定,${results.userName},${results.userEmpId},${results.timestamp},${results.score},${results.total*10}\r\n\r\n`;
+            csvContent += '题号,题目,您的答案,正确答案,是否正确,依据\r\n';
+            results.userAnswers.forEach((item) => {
+                const qNum = item.index + 1;
+                const correctMark = item.isCorrect ? '正确' : '错误';
+                const qText = item.question.replace(/,/g, '，');
+                csvContent += `${qNum},${qText},${item.selected},${item.correctAnswer},${correctMark},${questions[item.index].ref}\r\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            const dateStr = new Date().toISOString().slice(0,10);
+            link.download = `民航安全管理规定_${results.userName}_${dateStr}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            statusHint.textContent = `✅ 答题详情下载成功！`;
+            setTimeout(() => {
+                statusHint.textContent = `已提交 · 得分 ${results.score} 分 · 姓名：${results.userName}`;
+            }, 3000);
+        });
+
+        // ----- 成绩统计下载（所有历史记录）-----
+        statsDownloadBtn.addEventListener('click', function() {
+            const records = getRecords();
+            if (records.length === 0) {
+                alert('暂无考试记录，请先完成至少一次考试。');
+                return;
+            }
+
+            // 计算统计指标
+            const scores = records.map(r => r.score);
+            const totalCount = records.length;
+            const sum = scores.reduce((a, b) => a + b, 0);
+            const avg = (sum / totalCount).toFixed(1);
+            const max = Math.max(...scores);
+            const min = Math.min(...scores);
+            const passCount = scores.filter(s => s >= 60).length;
+            const passRate = ((passCount / totalCount) * 100).toFixed(1);
+
+            // 构建CSV
+            let csvContent = '\uFEFF';
+            // 统计摘要
+            csvContent += '=== 成绩统计摘要 ===\r\n';
+            csvContent += `总考试次数,平均分,最高分,最低分,及格人数(>=60),及格率(%)\r\n`;
+            csvContent += `${totalCount},${avg},${max},${min},${passCount},${passRate}\r\n\r\n`;
+
+            // 详细记录
+            csvContent += '=== 每次考试详细记录 ===\r\n';
+            csvContent += '序号,姓名,员工号,提交时间,得分,满分\r\n';
+            records.forEach((r, idx) => {
+                csvContent += `${idx+1},${r.name},${r.empId},${r.timestamp},${r.score},${r.total*10}\r\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            const dateStr = new Date().toISOString().slice(0,10);
+            link.download = `民航安全管理规定_成绩统计_${dateStr}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            statusHint.textContent = `✅ 成绩统计下载成功！共 ${totalCount} 条记录。`;
+            setTimeout(() => {
+                statusHint.textContent = `已提交 · 得分 ${window._examResults ? window._examResults.score : ''} 分`;
+            }, 3000);
+        });
+
+        window._examResults = null;
+    })();
+</script>
+</body>
+</html>
